@@ -17,7 +17,9 @@ export default class EditorGrid extends Grid{
 		this.activePicker = "walls"
 		this.key_down = false
 		this.giantBlock = false
+		//noinspection JSUnresolvedVariable
 		this.game = props[2]
+		this.mode = "select"        //select rect area or pencil
 
 		//init the toolBar picker
 	}
@@ -141,7 +143,14 @@ export default class EditorGrid extends Grid{
 					&& dY >= 0 && dY <= map.height * step){
 					let col = (dX / step) >>> 0,
 						row = (dY / step) >>> 0
-					this.partner.drawSelection(col,row)
+
+					if(this.mode === "select"){
+						this.partner.drawSelection(col,row)
+					}else{
+						//TODO
+						this._drawBlock(row,col,EditorGrid.MAPPER[this.activePicker][0])
+						this.map.changeBlock(col,row,EditorGrid.MAPPER[this.activePicker][1])
+					}
 				}
 			}
 		}
@@ -183,7 +192,11 @@ export default class EditorGrid extends Grid{
 			if(this.giantBlock === true){
 				this.drawItem()
 			}else{
-				this.drawArea()
+				if(this.mode === "select"){
+					this.drawArea()
+				}else{
+					//TODO
+				}
 			}
 			e.preventDefault()
 		}
@@ -208,9 +221,15 @@ export default class EditorGrid extends Grid{
 							break
 						case 3:
 							if(item[2] === "quit"){
-								//TODO: quit editor mode
+								fnKeyDown({keyCode:27})
 							}else if(item[2] === "save"){
 								this.map.insertMap()
+							}else if(item[2] === "pencil"){
+								this.mode = "pencil"
+							}else if(item[2] === "select"){
+								this.mode = "select"
+							}else if(item[2] === "revoke"){
+								this.revoke()
 							}
 							break
 						default:
@@ -234,8 +253,14 @@ export default class EditorGrid extends Grid{
 			}else {
 				this.outterClick = false
 				if(this.giantBlock === false){
-					this.partner.startSelection(col,row)
-					this.partner.drawSelection(col,row)
+					if(this.mode === "select"){
+						this.partner.startSelection(col,row)
+						this.partner.drawSelection(col,row)
+					}else{
+						//TODO
+						this._drawBlock(row,col,EditorGrid.MAPPER[this.activePicker][0])
+						this.map.changeBlock(col,row,EditorGrid.MAPPER[this.activePicker][1])
+					}
 				}else{
 					this.partner.startSelection(col,row)
 					this.partner.drawSelection(col,row)
@@ -264,6 +289,12 @@ export default class EditorGrid extends Grid{
 		listen("click", fnClick)
 		listen("mousedown", fnMouseDown)
 		listen("keydown", fnKeyDown)
+	}
+	revoke(){
+		this.map.clearAll()
+		super.init()
+		this.drawBorder()
+		this.drawToolBar()
 	}
 	static get PICKER(){
 		return [

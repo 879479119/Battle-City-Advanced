@@ -46,10 +46,12 @@ export default class Map extends Grid{
 			this.enemies.push({x:col,y:row})
 		}
 	}
-	//draw from local storage
-	static getMapList(){
-		let maps = window.localStorage.getItem('mapList')
-		return JSON.parse(maps)
+	clearAll(){
+		this.base = {}
+		this.player = {}
+		this.friend = {}
+		this.enemies = []
+		this.init()
 	}
 	insertMap(){
 		let map = {
@@ -62,5 +64,10 @@ export default class Map extends Grid{
 			material: this.mapData
 		}
 		window.localStorage.setItem('mapList',JSON.stringify([map]))
+	}
+	//draw from local storage
+	static getMapList(){
+		let maps = window.localStorage.getItem('mapList')
+		return JSON.parse(maps)
 	}
 }
