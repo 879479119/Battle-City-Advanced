@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<bridgedata version='1'>
+	<labels version='1'>
+		<item key='born3.gif' label='审阅'/>
+		<item key='p2tankF.gif' label='审阅'/>
+		<item key='p1tankU.gif' label='审阅'/>
+		<item key='born4.gif' label='审阅'/>
+		<item key='destory.gif' label='审阅'/>
+		<item key='water.gif' label='审阅'/>
+		<item key='steels.gif' label='审阅'/>
+		<item key='blast1.gif' label='已批准'/>
+		<item key='enemy1.gif' label='审阅'/>
+		<item key='blast2.gif' label='已批准'/>
+		<item key='enemy2.gif' label='审阅'/>
+		<item key='bomb.gif' label='审阅'/>
+		<item key='walls.gif' label='审阅'/>
+		<item key='blast3.gif' label='已批准'/>
+		<item key='enemy3.gif' label='审阅'/>
+		<item key='blast4.gif' label='已批准'/>
+		<item key='star.gif' label='审阅'/>
+		<item key='timer.gif' label='审阅'/>
+		<item key='blast5.gif' label='已批准'/>
+		<item key='enemy32.gif' label='审阅'/>
+		<item key='grass.gif' label='审阅'/>
+		<item key='blast6.gif' label='已批准'/>
+		<item key='born1.gif' label='审阅'/>
+		<item key='enemy33.gif' label='审阅'/>
+		<item key='base.gif' label='审阅'/>
+		<item key='blast7.gif' label='已批准'/>
+		<item key='born2.gif' label='审阅'/>
+		<item key='enemy34.gif' label='审阅'/>
+		<item key='blast8.gif' label='已批准'/>
+	</labels>
+</bridgedata>
