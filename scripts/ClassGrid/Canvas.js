@@ -43,12 +43,12 @@ export default class Canvas{
 	 * draw a grid when run 'drawSelection' is what a low performance,
 	 * to avoid unnecessary CPU cost, this function is closed by annotated
 	 */
-	drawSelection(col, row){
+	drawSelection(col, row, fromStart= true){
 		const { oX, oY, sX, sY } = this
 		this.c.clearRect(0,0,this.ele.width,this.ele.height)
 		// this.grid.drawLine(this)
 		this.c.fillStyle = "rgba(255,255,255,0.5)"
-		this.c.fillRect(oX+sX*8,oY+sY*8,(col-sX)*8,(row-sY)*8)
+		fromStart ? this.c.fillRect(oX+sX*8,oY+sY*8,(col-sX)*8,(row-sY)*8) : this.c.fillRect(oX+col*8,oY+row*8,8,8)
 
 		//TIP: the selection tool sometimes is not the same as what we draw
 		//therefore, we can store the status in memory

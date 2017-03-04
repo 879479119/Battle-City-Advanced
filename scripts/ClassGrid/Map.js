@@ -28,7 +28,8 @@ export default class Map extends Grid{
 	changeBlock(col, row, type){
 		this.mapData[row][col] = type
 	}
-	changeItem(col, row, type){
+	changeItem(col, row, type, del= false){
+		if (col === undefined || row === undefined) return
 		if(type === "p1tankU") {
 			let lastPos = {x: this.player.x, y: this.player.y}
 			this.player = {x: col, y: row}
@@ -42,8 +43,18 @@ export default class Map extends Grid{
 			this.base = {x: col, y: row}
 			return lastPos
 		}else if(type === "enemy1") {
-			if (col === undefined || row === undefined) return
-			this.enemies.push({x:col,y:row})
+			if(del === true){
+				this.enemies.some((item, index)=>{
+					if(item.x === col && item.y === row){
+						this.enemies.splice(index,1)
+						return true
+					}
+				})
+			}else {
+				this.enemies.push({x:col,y:row,type:[1,2,3,4]})
+			}
+			//maybe we can constrain the number of bases
+			return this.enemies.length
 		}
 	}
 	clearAll(){
@@ -60,7 +71,7 @@ export default class Map extends Grid{
 				height: this.height
 			},
 			startPosition: [this.player],
-			enemies: [{ x: 0, y: 0, type: [3,4] },],
+			enemies: this.enemies,
 			material: this.mapData
 		}
 		window.localStorage.setItem('mapList',JSON.stringify([map]))

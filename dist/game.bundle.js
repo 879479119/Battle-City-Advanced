@@ -536,6 +536,11 @@ var Map = function (_Grid) {
 	}, {
 		key: "changeItem",
 		value: function changeItem(col, row, type) {
+			var _this2 = this;
+
+			var del = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+			if (col === undefined || row === undefined) return;
 			if (type === "p1tankU") {
 				var lastPos = { x: this.player.x, y: this.player.y };
 				this.player = { x: col, y: row };
@@ -549,8 +554,18 @@ var Map = function (_Grid) {
 				this.base = { x: col, y: row };
 				return _lastPos2;
 			} else if (type === "enemy1") {
-				if (col === undefined || row === undefined) return;
-				this.enemies.push({ x: col, y: row });
+				if (del === true) {
+					this.enemies.some(function (item, index) {
+						if (item.x === col && item.y === row) {
+							_this2.enemies.splice(index, 1);
+							return true;
+						}
+					});
+				} else {
+					this.enemies.push({ x: col, y: row, type: [1, 2, 3, 4] });
+				}
+				//maybe we can constrain the number of bases
+				return this.enemies.length;
 			}
 		}
 	}, {
@@ -571,7 +586,7 @@ var Map = function (_Grid) {
 					height: this.height
 				},
 				startPosition: [this.player],
-				enemies: [{ x: 0, y: 0, type: [3, 4] }],
+				enemies: this.enemies,
 				material: this.mapData
 			};
 			window.localStorage.setItem('mapList', JSON.stringify([map]));
@@ -1068,6 +1083,7 @@ var Canvas = function () {
 	}, {
 		key: "drawSelection",
 		value: function drawSelection(col, row) {
+			var fromStart = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 			var oX = this.oX,
 			    oY = this.oY,
 			    sX = this.sX,
@@ -1076,7 +1092,7 @@ var Canvas = function () {
 			this.c.clearRect(0, 0, this.ele.width, this.ele.height);
 			// this.grid.drawLine(this)
 			this.c.fillStyle = "rgba(255,255,255,0.5)";
-			this.c.fillRect(oX + sX * 8, oY + sY * 8, (col - sX) * 8, (row - sY) * 8);
+			fromStart ? this.c.fillRect(oX + sX * 8, oY + sY * 8, (col - sX) * 8, (row - sY) * 8) : this.c.fillRect(oX + col * 8, oY + row * 8, 8, 8);
 
 			//TIP: the selection tool sometimes is not the same as what we draw
 			//therefore, we can store the status in memory
@@ -1410,12 +1426,13 @@ var EditorGrid = function (_Grid) {
 			var fnMouseMove = function fnMouseMove(e) {
 				var dX = e.x - offsetLeft - (width - step * map.width) / 2,
 				    dY = e.y - offsetTop - (height - step * map.height) / 2;
-				//press down a key
-				if (_this4.key_down === true && _this4.giantBlock === false) {
-					//in the range of a grid
-					if (dX >= 0 && dX <= map.width * step && dY >= 0 && dY <= map.height * step) {
-						var col = dX / step >>> 0,
-						    row = dY / step >>> 0;
+
+				//in the range of a grid
+				if (dX >= 0 && dX <= map.width * step && dY >= 0 && dY <= map.height * step) {
+					var col = dX / step >>> 0,
+					    row = dY / step >>> 0;
+					//press down a key
+					if (_this4.key_down === true && _this4.giantBlock === false) {
 
 						if (_this4.mode === "select") {
 							_this4.partner.drawSelection(col, row);
@@ -1424,6 +1441,8 @@ var EditorGrid = function (_Grid) {
 							_this4._drawBlock(row, col, EditorGrid.MAPPER[_this4.activePicker][0]);
 							_this4.map.changeBlock(col, row, EditorGrid.MAPPER[_this4.activePicker][1]);
 						}
+					} else {
+						_this4.partner.drawSelection(col, row, false);
 					}
 				}
 			};

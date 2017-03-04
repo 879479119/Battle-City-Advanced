@@ -136,21 +136,22 @@ export default class EditorGrid extends Grid{
 		let fnMouseMove = e=>{
 			let dX = e.x - offsetLeft - (width - step * map.width) / 2,
 				dY = e.y - offsetTop - (height - step * map.height) / 2
-			//press down a key
-			if(this.key_down === true && this.giantBlock === false){
-				//in the range of a grid
-				if(dX >= 0 && dX <= map.width * step
-					&& dY >= 0 && dY <= map.height * step){
-					let col = (dX / step) >>> 0,
-						row = (dY / step) >>> 0
 
-					if(this.mode === "select"){
-						this.partner.drawSelection(col,row)
-					}else{
+			//in the range of a grid
+			if(dX >= 0 && dX <= map.width * step && dY >= 0 && dY <= map.height * step){
+				let col = (dX / step) >>> 0, row = (dY / step) >>> 0
+				//press down a key
+				if(this.key_down === true && this.giantBlock === false) {
+
+					if (this.mode === "select") {
+						this.partner.drawSelection(col, row)
+					} else {
 						//TODO
-						this._drawBlock(row,col,EditorGrid.MAPPER[this.activePicker][0])
-						this.map.changeBlock(col,row,EditorGrid.MAPPER[this.activePicker][1])
+						this._drawBlock(row, col, EditorGrid.MAPPER[this.activePicker][0])
+						this.map.changeBlock(col, row, EditorGrid.MAPPER[this.activePicker][1])
 					}
+				}else{
+					this.partner.drawSelection(col, row, false)
 				}
 			}
 		}
