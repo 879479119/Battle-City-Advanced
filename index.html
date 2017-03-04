@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Battle-City-Advanced</title>
-  </head>
-  <body>
-    <div id="canvas-container">
-      <canvas id="canvas" width="800" height="400"></canvas>
+</head>
+<body>
+<div id="canvas-container">
+    <canvas id="canvas" width="800" height="400"></canvas>
+</div>
+<div id="introduction">
+    <p>Battle City is one of the most popular games in the world, and this is a JS version</p>
+    <hr>
+    <div class="details">
+        <section class="left">
+            <p><span class="code">W,A,S,D</span>-directions</p>
+            <p><span class="code">J</span>-fire</p>
+            <p><span class="code">Esc</span>-quit mode</p>
+        </section>
+        <section class="right">
+            <p>Since there is no default map, you must build a map first by click the 'construction'</p>
+        </section>
     </div>
-    <script src="./dist/game.bundle.js" charset="utf-8"></script>
-  </body>
+</div>
+<script src="./dist/game.bundle.js"></script>
+</body>
 </html>

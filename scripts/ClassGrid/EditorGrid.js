@@ -98,7 +98,6 @@ export default class EditorGrid extends Grid{
 	}
 	drawArea(){
 		const { partner: {endCol, endRow, sX, sY}, map} = this
-
 		if(sX === endCol && sY === endRow){
 			map.changeBlock(endCol,endRow,EditorGrid.MAPPER[this.activePicker][1])
 			this._drawBlock(endRow,endCol,EditorGrid.MAPPER[this.activePicker][0])
@@ -127,8 +126,9 @@ export default class EditorGrid extends Grid{
 	}
 	startPicker(){
 		let { map, width, height, step, ele: { offsetLeft, offsetTop } } = this
-		offsetLeft = offsetLeft + this.ele.parentNode.offsetLeft
-		offsetTop = offsetTop + this.ele.parentNode.offsetTop
+
+		// offsetLeft += offsetLeft
+		offsetTop += this.ele.parentNode.offsetTop
 		let listen = this.partner.ele.addEventListener
 
 		let fnMouseMove = e=>{
@@ -267,9 +267,12 @@ export default class EditorGrid extends Grid{
 	}
 	static get PICKER(){
 		return [
-			[49,47,"bin",1],
-			[29,47,"save",3],
-			[69,47,"quit",3],
+			[72,47,"bin",1],
+			[22,47,"save",3],
+			[32,47,"quit",3],
+			[42,47,"pencil",3],
+			[52,47,"revoke",3],
+			[62,47,"select",3],
 			[4,10,"base",2],
 			[4,20,"p1tankU",2],
 			[4,30,"p2tankF",2],

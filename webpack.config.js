@@ -1,4 +1,4 @@
-const webpack = require("webpack")
+require("webpack")
 
 module.exports = {
   context: __dirname + "/scripts",
@@ -13,7 +13,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: ["less","style-loader"]
+        use: ["style-loader","css-loader","less-loader"]
       },
       {
         test: /\.gif$/,

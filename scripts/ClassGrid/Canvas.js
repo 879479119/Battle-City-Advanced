@@ -24,7 +24,8 @@ export default class Canvas{
 		this.ele.width = dom.width
 		this.ele.height = dom.height
 		this.ele.style.position = "absolute"
-		this.ele.style.left = 0
+		this.ele.style.left = "50%"
+		this.ele.style.marginLeft = -dom.width/2+"px"
 		this.ele.style.top = 0
 		document.querySelector("#canvas-container").appendChild(this.ele)
 
@@ -37,7 +38,6 @@ export default class Canvas{
 	startSelection(col, row){
 		this.sX = col
 		this.sY = row
-		console.log(this.sX,this.sY)
 	}
 	/**
 	 * draw a grid when run 'drawSelection' is what a low performance,

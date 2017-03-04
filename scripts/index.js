@@ -1,4 +1,5 @@
 import { enter, init, editMap } from './mode'
+import '../style.less'
 
 let game = {status: "profile",animation:true}
 setInterval(()=>{
