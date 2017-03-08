@@ -541,6 +541,13 @@ var Map = function (_Grid) {
 			var del = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
 			if (col === undefined || row === undefined) return;
+
+			//clear the area
+			this.changeBlock(col, row, 0);
+			this.changeBlock(col + 1, row, 0);
+			this.changeBlock(col, row + 1, 0);
+			this.changeBlock(col + 1, row + 1, 0);
+
 			if (type === "p1tankU") {
 				var lastPos = { x: this.player.x, y: this.player.y };
 				this.player = { x: col, y: row };
@@ -587,7 +594,8 @@ var Map = function (_Grid) {
 				},
 				startPosition: [this.player],
 				enemies: this.enemies,
-				material: this.mapData
+				material: this.mapData,
+				base: this.base
 			};
 			window.localStorage.setItem('mapList', JSON.stringify([map]));
 		}
@@ -1741,6 +1749,16 @@ var GameGrid = function (_Grid) {
 				gridValid.push([].concat(rowArr));
 				rowArr.length = 0;
 			}
+			//not only the constructions, but the base
+			var _map$base = this.map.base,
+			    x = _map$base.x,
+			    y = _map$base.y;
+
+			gridValid[y][x] = 0;
+			gridValid[y][x + 1] = 0;
+			gridValid[y + 1][x] = 0;
+			gridValid[y + 1][x + 1] = 0;
+
 			this.alley = gridValid;
 			return gridValid;
 		}
@@ -1783,19 +1801,26 @@ var GameGrid = function (_Grid) {
 	}, {
 		key: 'drawConstruction',
 		value: function drawConstruction() {
-			var _map$size = this.map.size,
+			var _map = this.map,
+			    _map$size = _map.size,
 			    width = _map$size.width,
 			    height = _map$size.height,
+			    _map$base2 = _map.base,
+			    x = _map$base2.x,
+			    y = _map$base2.y,
 			    material = this.material;
 
 
 			var blocks = _Grid3.default._adaptor(material);
 
+			// basic blocks
 			for (var row = 0; row < height; row++) {
 				for (var col = 0; col < width; col++) {
 					this._drawBlock(row, col, blocks[row][col]);
 				}
 			}
+			// base and other giant blocks
+			this._drawGiantBlock(x, y, 'base');
 		}
 	}, {
 		key: 'updateEnemy',
@@ -2030,8 +2055,6 @@ var _ImageManager = __webpack_require__(1);
 
 var _ImageManager2 = _interopRequireDefault(_ImageManager);
 
-var _mode = __webpack_require__(2);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -2058,6 +2081,7 @@ var ProfileGrid = function (_Grid) {
 			props[_key] = arguments[_key];
 		}
 
+		//noinspection JSUnresolvedVariable
 		var _this = _possibleConstructorReturn(this, (_ref = ProfileGrid.__proto__ || Object.getPrototypeOf(ProfileGrid)).call.apply(_ref, [this].concat(props)));
 
 		_this.game = props[2];
@@ -2120,8 +2144,8 @@ var ProfileGrid = function (_Grid) {
 
 			var callback = function callback(e) {
 				//TODO: here, we need some algorithm instead of magic number
-				var x = e.x - _this2.ele.parentElement.offsetLeft,
-				    y = e.y - _this2.ele.parentElement.offsetTop;
+				var x = e.x - _this2.ele.offsetLeft,
+				    y = e.y - _this2.ele.parentNode.offsetTop;
 
 				if (x > 300 && x < 500 && y > 240 && y < 280) {
 					_this2.c.restore();

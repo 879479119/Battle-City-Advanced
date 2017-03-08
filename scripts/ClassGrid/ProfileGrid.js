@@ -1,6 +1,5 @@
 import Grid from './Grid'
 import ImageManager from '../ClassManager/ImageManager'
-import { init, editMap } from '../mode'
 
 /**
  * a grid which shows the profile screen and others
@@ -9,6 +8,7 @@ import { init, editMap } from '../mode'
 export default class ProfileGrid extends Grid{
 	constructor(...props){
 		super(...props)
+		//noinspection JSUnresolvedVariable
 		this.game = props[2]
 	}
 	init(){
@@ -55,8 +55,9 @@ export default class ProfileGrid extends Grid{
 	startListener(){
 		let callback = e => {
 			//TODO: here, we need some algorithm instead of magic number
-			let x = e.x - this.ele.parentElement.offsetLeft,
-				y = e.y - this.ele.parentElement.offsetTop
+			let x = e.x - this.ele.offsetLeft,
+				y = e.y - this.ele.parentNode.offsetTop
+
 
 			if(x > 300 && x < 500 && y > 240 && y < 280){
 				this.c.restore()

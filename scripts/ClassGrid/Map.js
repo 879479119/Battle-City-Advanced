@@ -30,6 +30,13 @@ export default class Map extends Grid{
 	}
 	changeItem(col, row, type, del= false){
 		if (col === undefined || row === undefined) return
+
+		//clear the area
+		this.changeBlock(col, row, 0)
+		this.changeBlock(col + 1, row, 0)
+		this.changeBlock(col, row + 1, 0)
+		this.changeBlock(col + 1, row + 1, 0)
+
 		if(type === "p1tankU") {
 			let lastPos = {x: this.player.x, y: this.player.y}
 			this.player = {x: col, y: row}
@@ -72,7 +79,8 @@ export default class Map extends Grid{
 			},
 			startPosition: [this.player],
 			enemies: this.enemies,
-			material: this.mapData
+			material: this.mapData,
+			base: this.base
 		}
 		window.localStorage.setItem('mapList',JSON.stringify([map]))
 	}

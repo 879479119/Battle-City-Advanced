@@ -16,4 +16,6 @@ Don't forget to star :star: & fork :fork_and_knife:
 + `npm start`
 + open `index.html` in browser
 
+Here is a [TODO LIST](https://github.com/879479119/Battle-City-Advanced/blob/master/TO_DO_LIST.md) you may be interested
+
 Make with :heart: by *RockSAMA*

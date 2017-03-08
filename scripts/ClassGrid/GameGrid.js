@@ -38,7 +38,6 @@ export default class GameGrid extends Grid{
 		 *  4 - destroyable, fire can destroy, e.g: BLOCK
 		 */
 
-
 		for(let row = 0;row < height;row ++){
 			let rowArr = []
 
@@ -56,6 +55,13 @@ export default class GameGrid extends Grid{
 			gridValid.push([...rowArr])
 			rowArr.length = 0
 		}
+		//not only the constructions, but the base
+		let { x, y } = this.map.base
+		gridValid[y][x] = 0
+		gridValid[y][x+1] = 0
+		gridValid[y+1][x] = 0
+		gridValid[y+1][x+1] = 0
+
 		this.alley = gridValid
 		return gridValid
 	}
@@ -80,16 +86,19 @@ export default class GameGrid extends Grid{
 	}
 	drawConstruction(){
 
-		const { size: { width, height} } = this.map,
+		const { size: { width, height}, base: { x, y } } = this.map,
 			material = this.material
 
 		let blocks = Grid._adaptor(material)
 
+		// basic blocks
 		for(let row = 0;row < height;row ++){
 			for(let col = 0;col < width;col ++){
 				this._drawBlock(row, col, blocks[row][col])
 			}
 		}
+		// base and other giant blocks
+		this._drawGiantBlock(x, y, 'base')
 
 	}
 	updateEnemy(enemy){
