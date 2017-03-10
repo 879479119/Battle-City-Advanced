@@ -151,6 +151,8 @@ export default class EditorGrid extends Grid{
 						this.map.changeBlock(col, row, EditorGrid.MAPPER[this.activePicker][1])
 					}
 				}else{
+					// point out where the cursor is,
+					if(col >= this.map.width || row >= this.map.height) return
 					this.partner.drawSelection(col, row, false)
 				}
 			}

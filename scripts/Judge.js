@@ -67,9 +67,12 @@ export default class Judge{
 			}
 			item.releaseRandomFire(fireController)
 			Judge._checkImpact(grid, item)
-			if(item.running === false) item.changeDirection()
-			else if(Judge.randomBool === false) item.changeDirection()
-			grid.updateTank(item, item.running)
+			if(item.running === false) {
+				// fire to the wall
+				item.stopCount === 10 && item.releaseRandomFire(fireController, false)
+				item.stopCount === 60 && item.continueRun()
+			} else if(Judge.randomBool === false) item.changeDirection()
+			grid.updateTank(item, item.running, fireController)
 		})
 
 		/*------------------------either  part-------------------------*/
@@ -262,17 +265,21 @@ export default class Judge{
 					return
 				}
 				let over = false
+				/**
+				 * here we just check the top block but not the current one,
+				 * to make sure the block would be destroyed no matter how fast the cannon is, we should inject some judge
+				 */
 				switch (direction){
 					case 'w':
 						let w1 = alley[row - 1][col], w2 = alley[row - 1][col + 1]
 						if(w1 == 4 || w2 == 4){
 							//the top block
-							if(oY <= 2 && w1 == 4){fireOnBlock(index,col,row - 1)}
+							if(oY <= 3 && w1 == 4){fireOnBlock(index,col,row - 1)}
 							//the block at right
-							if(oY <= 2 && oX >= grid.step - size && w2 == 4){fireOnBlock(index,col + 1,row - 1)}
+							if(oY <= 3 && oX >= grid.step - size && w2 == 4){fireOnBlock(index,col + 1,row - 1)}
 						}else if(w1 == 3 || w2 == 3){
-							if(oY <= 2 && w1 == 3){fireOnBlock(index)} //draw a boom
-							if(oY <= 2 && oX >= grid.step - size && w2 == 3){fireOnBlock(index)} //boom
+							if(oY <= 3 && w1 == 3){fireOnBlock(index)} //draw a boom
+							if(oY <= 3 && oX >= grid.step - size && w2 == 3){fireOnBlock(index)} //boom
 						}
 						break
 					case 's':
@@ -288,11 +295,11 @@ export default class Judge{
 					case 'a':
 						let a1 = alley[row][col - 1], a2 = alley[row + 1][col - 1]
 						if(a1 == 4 || a2 == 4){
-							if(oX <= 2 && a1 == 4){fireOnBlock(index,col - 1,row)}
-							if(oX <= 2 && oY >= grid.step - size && a2 == 4){fireOnBlock(index,col - 1,row + 1)}
+							if(oX <= 3 && a1 == 4){fireOnBlock(index,col - 1,row)}
+							if(oX <= 3 && oY >= grid.step - size && a2 == 4){fireOnBlock(index,col - 1,row + 1)}
 						}else if(a1 == 3 || a2 == 3){
-							if(oX <= 2 && a1 == 3){fireOnBlock(index)} //draw a boom
-							if(oX <= 2 && oY >= grid.step - size && a2 == 3){fireOnBlock(index)} //boom
+							if(oX <= 3 && a1 == 3){fireOnBlock(index)} //draw a boom
+							if(oX <= 3 && oY >= grid.step - size && a2 == 3){fireOnBlock(index)} //boom
 						}
 						break
 					case 'd':

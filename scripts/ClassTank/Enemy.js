@@ -19,7 +19,8 @@ export default class Enemy extends Tank{
 			type: props[2] || 0, //like this?
 			speed: 5,
 			health: 5,
-			damage: 1
+			damage: 1,
+			stopCount: 0,        //counting frames after knocking the wall
 		}
 		merge(this, initAttr)
 	}
@@ -37,7 +38,15 @@ export default class Enemy extends Tank{
 	getAttacked(){
 		super.getAttacked()
 	}
-	releaseRandomFire(controller){
-		if(Tank.randomBool === false)controller.addFire(new EnemyFire(this))
+	stayInPosition(){
+		this.stopCount ++
+	}
+	continueRun(){
+		this.stopCount = 0
+		this.running = true
+		this.changeDirection()
+	}
+	releaseRandomFire(controller, random= true){
+		if(!random || Tank.randomBool === false)controller.addFire(new EnemyFire(this))
 	}
 }

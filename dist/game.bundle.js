@@ -1450,6 +1450,8 @@ var EditorGrid = function (_Grid) {
 							_this4.map.changeBlock(col, row, EditorGrid.MAPPER[_this4.activePicker][1]);
 						}
 					} else {
+						// point out where the cursor is,
+						if (col >= _this4.map.width || row >= _this4.map.height) return;
 						_this4.partner.drawSelection(col, row, false);
 					}
 				}
@@ -1659,6 +1661,10 @@ var _EnemyBase = __webpack_require__(6);
 
 var _EnemyBase2 = _interopRequireDefault(_EnemyBase);
 
+var _Enemy = __webpack_require__(20);
+
+var _Enemy2 = _interopRequireDefault(_Enemy);
+
 var _Grid2 = __webpack_require__(0);
 
 var _Grid3 = _interopRequireDefault(_Grid2);
@@ -1864,6 +1870,7 @@ var GameGrid = function (_Grid) {
 		key: 'updateTank',
 		value: function updateTank(tank) {
 			var run = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+			var fireC = arguments[2];
 
 			//in ideal situation(60Hz), the tank can go $speed*10 pixel one second
 			var posX = tank.posX,
@@ -1902,6 +1909,9 @@ var GameGrid = function (_Grid) {
 				}
 
 				this.c.drawImage(dummy._getRotateBlock(tankName, d), posX * this.step + offsetX, posY * this.step + offsetY, this.len, this.len);
+
+				if (tank instanceof _Enemy2.default) tank.stayInPosition();
+
 				return;
 			}
 			switch (true) {
@@ -2266,8 +2276,8 @@ var Enemy = function (_Tank) {
 			type: props[2] || 0, //like this?
 			speed: 5,
 			health: 5,
-			damage: 1
-		};
+			damage: 1,
+			stopCount: 0 };
 		(0, _Util.merge)(_this, initAttr);
 		return _this;
 	}
@@ -2291,9 +2301,23 @@ var Enemy = function (_Tank) {
 			_get(Enemy.prototype.__proto__ || Object.getPrototypeOf(Enemy.prototype), 'getAttacked', this).call(this);
 		}
 	}, {
+		key: 'stayInPosition',
+		value: function stayInPosition() {
+			this.stopCount++;
+		}
+	}, {
+		key: 'continueRun',
+		value: function continueRun() {
+			this.stopCount = 0;
+			this.running = true;
+			this.changeDirection();
+		}
+	}, {
 		key: 'releaseRandomFire',
 		value: function releaseRandomFire(controller) {
-			if (_Tank3.default.randomBool === false) controller.addFire(new _EnemyFire2.default(this));
+			var random = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+			if (!random || _Tank3.default.randomBool === false) controller.addFire(new _EnemyFire2.default(this));
 		}
 	}]);
 
@@ -2588,8 +2612,12 @@ var Judge = function () {
 				}
 				item.releaseRandomFire(fireController);
 				Judge._checkImpact(grid, item);
-				if (item.running === false) item.changeDirection();else if (Judge.randomBool === false) item.changeDirection();
-				grid.updateTank(item, item.running);
+				if (item.running === false) {
+					// fire to the wall
+					item.stopCount === 10 && item.releaseRandomFire(fireController, false);
+					item.stopCount === 60 && item.continueRun();
+				} else if (Judge.randomBool === false) item.changeDirection();
+				grid.updateTank(item, item.running, fireController);
 			});
 
 			/*------------------------either  part-------------------------*/
@@ -2815,24 +2843,28 @@ var Judge = function () {
 						return;
 					}
 					var over = false;
+					/**
+      * here we just check the top block but not the current one,
+      * to make sure the block would be destroyed no matter how fast the cannon is, we should inject some judge
+      */
 					switch (direction) {
 						case 'w':
 							var w1 = alley[row - 1][col],
 							    w2 = alley[row - 1][col + 1];
 							if (w1 == 4 || w2 == 4) {
 								//the top block
-								if (oY <= 2 && w1 == 4) {
+								if (oY <= 3 && w1 == 4) {
 									fireOnBlock(index, col, row - 1);
 								}
 								//the block at right
-								if (oY <= 2 && oX >= grid.step - size && w2 == 4) {
+								if (oY <= 3 && oX >= grid.step - size && w2 == 4) {
 									fireOnBlock(index, col + 1, row - 1);
 								}
 							} else if (w1 == 3 || w2 == 3) {
-								if (oY <= 2 && w1 == 3) {
+								if (oY <= 3 && w1 == 3) {
 									fireOnBlock(index);
 								} //draw a boom
-								if (oY <= 2 && oX >= grid.step - size && w2 == 3) {
+								if (oY <= 3 && oX >= grid.step - size && w2 == 3) {
 									fireOnBlock(index);
 								} //boom
 							}
@@ -2860,17 +2892,17 @@ var Judge = function () {
 							var a1 = alley[row][col - 1],
 							    a2 = alley[row + 1][col - 1];
 							if (a1 == 4 || a2 == 4) {
-								if (oX <= 2 && a1 == 4) {
+								if (oX <= 3 && a1 == 4) {
 									fireOnBlock(index, col - 1, row);
 								}
-								if (oX <= 2 && oY >= grid.step - size && a2 == 4) {
+								if (oX <= 3 && oY >= grid.step - size && a2 == 4) {
 									fireOnBlock(index, col - 1, row + 1);
 								}
 							} else if (a1 == 3 || a2 == 3) {
-								if (oX <= 2 && a1 == 3) {
+								if (oX <= 3 && a1 == 3) {
 									fireOnBlock(index);
 								} //draw a boom
-								if (oX <= 2 && oY >= grid.step - size && a2 == 3) {
+								if (oX <= 3 && oY >= grid.step - size && a2 == 3) {
 									fireOnBlock(index);
 								} //boom
 							}

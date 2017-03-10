@@ -1,5 +1,6 @@
 import ImageManager from '../ClassManager/ImageManager'
 import EnemyBase from '../ClassTank/EnemyBase'
+import Enemy from '../ClassTank/Enemy'
 import Grid from './Grid'
 import Map from './Map'
 import DummyGrid from './DummyGrid'
@@ -123,7 +124,7 @@ export default class GameGrid extends Grid{
 		let aY = posY * this.step + offsetY
 		this._drawGiantBlock(aX,aY,"blast"+tank.deadStage,this,true)
 	}
-	updateTank(tank, run = false){
+	updateTank(tank, run = false, fireC){
 		//in ideal situation(60Hz), the tank can go $speed*10 pixel one second
 		let {posX, posY, offsetX, offsetY, speed, direction, type, ally} = tank
 		let move = speed * 10 / 60
@@ -160,6 +161,9 @@ export default class GameGrid extends Grid{
 				posY * this.step + offsetY,
 				this.len, this.len
 			)
+
+			if(tank instanceof Enemy) tank.stayInPosition()
+
 			return
 		}
 		switch (true){
