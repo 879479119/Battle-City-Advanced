@@ -1,11 +1,11 @@
 ## What to do next?
 
 ### FIX BUGS
-+ grass will be destroyed when enemy is attacked below it
++ :white_check_mark: grass will be destroyed when enemy is attacked below it
 + enemies run like walking dead, should they be smarter but not much more ?
 + make collision detection runs before any movement, which leads to many BUGS
 + editor mode operating area overflows
-+ cannon lies in a layer above grass, ani't matching the old version
++ :white_check_mark: cannon lies in a layer above grass, ani't matching the old version
 + complete the rules of game, ensure it runs same as the old one
 + our tank lose control when press several keys same time
 + 

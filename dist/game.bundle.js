@@ -275,6 +275,29 @@ ImageManager.init();
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+exports.merge = merge;
+exports.getPath2D = getPath2D;
+function merge(self, init) {
+	for (var attr in init) {
+		if (init.hasOwnProperty(attr)) self[attr] = init[attr];
+	}
+	return 1;
+}
+
+function getPath2D(char) {
+	var result = "";
+}
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -392,29 +415,6 @@ function editMap(game, width, height) {
 	console.log(213);
 	//create some samples for user to pick
 	grid.drawToolBar();
-}
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.merge = merge;
-exports.getPath2D = getPath2D;
-function merge(self, init) {
-	for (var attr in init) {
-		if (init.hasOwnProperty(attr)) self[attr] = init[attr];
-	}
-	return 1;
-}
-
-function getPath2D(char) {
-	var result = "";
 }
 
 /***/ }),
@@ -688,7 +688,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Util = __webpack_require__(3);
+var _Util = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1750,14 +1750,18 @@ var GameGrid = function (_Grid) {
 				rowArr.length = 0;
 			}
 			//not only the constructions, but the base
-			var _map$base = this.map.base,
-			    x = _map$base.x,
-			    y = _map$base.y;
+			try {
+				var _map$base = this.map.base,
+				    x = _map$base.x,
+				    y = _map$base.y;
 
-			gridValid[y][x] = 0;
-			gridValid[y][x + 1] = 0;
-			gridValid[y + 1][x] = 0;
-			gridValid[y + 1][x + 1] = 0;
+				gridValid[y][x] = 0;
+				gridValid[y][x + 1] = 0;
+				gridValid[y + 1][x] = 0;
+				gridValid[y + 1][x + 1] = 0;
+			} catch (e) {
+				alert("There is no base in map, please build a new one!");
+			}
 
 			this.alley = gridValid;
 			return gridValid;
@@ -2224,7 +2228,7 @@ var _EnemyFire = __webpack_require__(11);
 
 var _EnemyFire2 = _interopRequireDefault(_EnemyFire);
 
-var _Util = __webpack_require__(3);
+var _Util = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2368,9 +2372,9 @@ var _PlayerFire = __webpack_require__(13);
 
 var _PlayerFire2 = _interopRequireDefault(_PlayerFire);
 
-var _Util = __webpack_require__(3);
+var _Util = __webpack_require__(2);
 
-var _mode = __webpack_require__(2);
+var _mode = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2589,10 +2593,8 @@ var Judge = function () {
 			});
 
 			/*------------------------either  part-------------------------*/
-
-			grid.drawConstruction();
-
 			grid.updateFire(fireController);
+			grid.drawConstruction();
 		}
 	}], [{
 		key: '_checkImpact',
@@ -2975,7 +2977,7 @@ var Judge = function () {
 
 				function tankDamaged(tank) {
 					tank.getAttacked(grid);
-					grid.fireOnBlock(fireC.fireArr[index], col, row);
+					grid.fireOnBlock(fireC.fireArr[index]);
 					fireC.fireGone(index);
 				}
 				//check Construction first
@@ -3539,7 +3541,7 @@ module.exports = "data:image/gif;base64,R0lGODlhPAA8APcAAAAAAP///7+0uWM1/sS+2UEg
 "use strict";
 
 
-var _mode = __webpack_require__(2);
+var _mode = __webpack_require__(3);
 
 __webpack_require__(8);
 

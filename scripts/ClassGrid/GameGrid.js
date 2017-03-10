@@ -56,11 +56,15 @@ export default class GameGrid extends Grid{
 			rowArr.length = 0
 		}
 		//not only the constructions, but the base
-		let { x, y } = this.map.base
-		gridValid[y][x] = 0
-		gridValid[y][x+1] = 0
-		gridValid[y+1][x] = 0
-		gridValid[y+1][x+1] = 0
+		try{
+			let { x, y } = this.map.base
+			gridValid[y][x] = 0
+			gridValid[y][x+1] = 0
+			gridValid[y+1][x] = 0
+			gridValid[y+1][x+1] = 0
+		}catch(e){
+			alert("There is no base in map, please build a new one!")
+		}
 
 		this.alley = gridValid
 		return gridValid

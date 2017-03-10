@@ -73,10 +73,8 @@ export default class Judge{
 		})
 
 		/*------------------------either  part-------------------------*/
-
-		grid.drawConstruction()
-
 		grid.updateFire(fireController)
+		grid.drawConstruction()
 	}
 	static _checkImpact(grid, tank){
 
@@ -395,7 +393,7 @@ export default class Judge{
 
 			function tankDamaged(tank) {
 				tank.getAttacked(grid)
-				grid.fireOnBlock(fireC.fireArr[index], col, row)
+				grid.fireOnBlock(fireC.fireArr[index])
 				fireC.fireGone(index)
 			}
 			//check Construction first
