@@ -54,6 +54,10 @@ export default class Grid{
 			img = ImageManager.getBitMap(type)
 		img && self.c.drawImage(img, x, y, self.len, self.len)
 	}
+	clearAll(){
+		this.c.fillStyle = "#000"
+		this.c.fillRect(0,0,this.width,this.height)
+	}
 	static _adaptor(material){
 		return material.map(k=>{
 			return k.map(k=>Grid.materialData[k])

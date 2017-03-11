@@ -42,8 +42,8 @@ export default class Player extends Tank{
 		listen('keyup', listenKeyUp)
 
 		function listenKeyDown (e) {
+			console.log("quit game")
 			if(e.keyCode === 27){
-
 				//remove the listeners to make sure that the garbage collection collect it
 				that.game.status = "profile"
 				that.game.animation = false

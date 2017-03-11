@@ -8,7 +8,7 @@
 + :white_check_mark: cannon lies in a layer above grass, ani't matching the old version
 + complete the rules of game, ensure it runs same as the old one
 + our tank lose control when press several keys same time
-+ 
++ game mode canvas lies out of the center of grid
 
 ### UPDATE
 

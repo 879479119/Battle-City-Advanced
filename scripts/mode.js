@@ -51,8 +51,9 @@ export function init(game) {
 	//start moving frame by frame
 	let frame = new Judge(grid, map, player, fireController, enemyBases, enemyController)
 
+	grid.init(map)
 	let keyFrame = () => {
-		grid.init(map)
+		grid.clearAll()
 		frame.go()
 		animation = requestAnimationFrame(keyFrame)
 		if(!game.animation) cancelAnimationFrame(animation)

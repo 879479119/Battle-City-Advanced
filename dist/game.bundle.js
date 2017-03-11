@@ -153,6 +153,12 @@ var Grid = function () {
 			    img = _ImageManager2.default.getBitMap(type);
 			img && self.c.drawImage(img, x, y, self.len, self.len);
 		}
+	}, {
+		key: 'clearAll',
+		value: function clearAll() {
+			this.c.fillStyle = "#000";
+			this.c.fillRect(0, 0, this.width, this.height);
+		}
 	}], [{
 		key: '_adaptor',
 		value: function _adaptor(material) {
@@ -195,7 +201,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Manager2 = __webpack_require__(19);
+var _Manager2 = __webpack_require__(20);
 
 var _Manager3 = _interopRequireDefault(_Manager2);
 
@@ -207,7 +213,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var requireContext = __webpack_require__(9);
+var requireContext = __webpack_require__(10);
 var allGif = requireContext.keys().map(requireContext);
 
 var ImageManager = function (_Manager) {
@@ -276,7 +282,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.merge = merge;
-exports.getPath2D = getPath2D;
 function merge(self, init) {
 	for (var attr in init) {
 		if (init.hasOwnProperty(attr)) self[attr] = init[attr];
@@ -284,9 +289,7 @@ function merge(self, init) {
 	return 1;
 }
 
-function getPath2D(char) {
-	var result = "";
-}
+var MOE_BUNNY = exports.MOE_BUNNY = "\n\t,.\u2010\u2010\uFF64\u3000\u3000\u3000\u3000\u3000\u3000 ,.-\u2010-\uFF64\n\u3000\u304F__,.\u30D8\u30FD.\u3000\u3000\u3000\u3000/\u3000,\u30FC\uFF64 \u3009\n\u3000\u3000\u3000\uFF3C ', !-\u2500\u2010-i\u3000/\u3000/\xB4\n\u3000 \u3000 \uFF0F\uFF40\uFF70'\u3000\u3000\u3000 L/\uFF0F\uFF40\u30FD\uFF64\n\u3000 /\u3000 \uFF0F,\u3000 /|\u3000 ,\u3000 ,\u3000\u3000\u3000 ',\n\u3000\uFF72 \u3000/ /-\u2010/\u3000\uFF49\u3000L_ \uFF8A \u30FD!\u3000 i\n\u3000 \uFF9A \uFF8D 7\uFF72\uFF40\uFF84\u3000 \uFF9A'\uFF67-\uFF84\uFF64!\u30CF|\u3000 |\n\u3000\u3000 !,/7 '\u309E'\u3000\u3000 \xB4i__r\uFF8Ai\u30BD| \u3000 |\n\u3000\u3000 |.\u4ECE\"\u3000 \uFF64__ ,\u3000,,,, / |./ \u3000 |\n\u3000\u3000 \uFF9A'| i\uFF1E.\uFF64,,__\u3000_,.\u30A4 / \u3000.i \u3000|\n\u3000\u3000\u3000 \uFF9A'| | / k_\uFF17_/\uFF9A'\u30FD,\u3000\uFF8A.\u3000|\n\u3000\u3000\u3000\u3000 | |/i \u3008|/\u3000 i\u3000,.\uFF8D |\u3000i\u3000|\n\u3000\u3000\u3000\u3000.|/ /\u3000\uFF49\uFF1A \u3000 \uFF8D!\u3000\u3000\uFF3C\u3000|\n\u3000 \u3000 \u3000 k\u30FD>\uFF64\uFF8A \u3000 _,.\uFF8D\uFF64 \u3000 /\uFF64!\n\u3000\u3000\u3000\u3000 !'\u3008//\uFF40\uFF34\xB4', \uFF3C \uFF40'7'\uFF70r'\n\u3000\u3000\u3000\u3000 \uFF9A'\u30FDL__|___i,___,\u30F3\uFF9A|\u30CE\n\u3000\u3000\u3000 \u3000\u3000\u3000\uFF84-,/\u3000|___./\n\u3000\u3000\u3000 \u3000\u3000\u3000'\uFF70'\u3000\u3000!_,./               YOU ARE DEAD ! SERIOUSLY !";
 
 /***/ }),
 /* 3 */
@@ -313,19 +316,19 @@ var _Map = __webpack_require__(5);
 
 var _Map2 = _interopRequireDefault(_Map);
 
-var _Canvas = __webpack_require__(14);
+var _Canvas = __webpack_require__(15);
 
 var _Canvas2 = _interopRequireDefault(_Canvas);
 
-var _GameGrid = __webpack_require__(17);
+var _GameGrid = __webpack_require__(18);
 
 var _GameGrid2 = _interopRequireDefault(_GameGrid);
 
-var _EditorGrid = __webpack_require__(16);
+var _EditorGrid = __webpack_require__(17);
 
 var _EditorGrid2 = _interopRequireDefault(_EditorGrid);
 
-var _ProfileGrid = __webpack_require__(18);
+var _ProfileGrid = __webpack_require__(19);
 
 var _ProfileGrid2 = _interopRequireDefault(_ProfileGrid);
 
@@ -333,7 +336,7 @@ var _Player = __webpack_require__(22);
 
 var _Player2 = _interopRequireDefault(_Player);
 
-var _EnemyBase = __webpack_require__(6);
+var _EnemyBase = __webpack_require__(7);
 
 var _EnemyBase2 = _interopRequireDefault(_EnemyBase);
 
@@ -341,7 +344,7 @@ var _EnemyController = __webpack_require__(21);
 
 var _EnemyController2 = _interopRequireDefault(_EnemyController);
 
-var _FireManager = __webpack_require__(12);
+var _FireManager = __webpack_require__(13);
 
 var _FireManager2 = _interopRequireDefault(_FireManager);
 
@@ -394,8 +397,9 @@ function init(game) {
 	//start moving frame by frame
 	var frame = new _judge2.default(grid, map, player, fireController, enemyBases, enemyController);
 
+	grid.init(map);
 	var keyFrame = function keyFrame() {
-		grid.init(map);
+		grid.clearAll();
 		frame.go();
 		animation = requestAnimationFrame(keyFrame);
 		if (!game.animation) cancelAnimationFrame(animation);
@@ -627,6 +631,117 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _Tank2 = __webpack_require__(8);
+
+var _Tank3 = _interopRequireDefault(_Tank2);
+
+var _EnemyFire = __webpack_require__(12);
+
+var _EnemyFire2 = _interopRequireDefault(_EnemyFire);
+
+var _Util = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * Enemy tank types:
+ *     speed | power | health
+ *  0.  fast  normal   less
+ *  1. normal normal  normal
+ *  2. normal higher   more
+ *  3. slow  one beat  highest
+ *  4. normal normal  normal (always blinking and if destroy it, you can get useful items)
+ */
+
+var Enemy = function (_Tank) {
+	_inherits(Enemy, _Tank);
+
+	function Enemy() {
+		var _ref;
+
+		_classCallCheck(this, Enemy);
+
+		for (var _len = arguments.length, props = Array(_len), _key = 0; _key < _len; _key++) {
+			props[_key] = arguments[_key];
+		}
+
+		var _this = _possibleConstructorReturn(this, (_ref = Enemy.__proto__ || Object.getPrototypeOf(Enemy)).call.apply(_ref, [this].concat(props)));
+
+		var initAttr = {
+			type: props[2] || 0, //like this?
+			speed: 5,
+			health: 5,
+			damage: 1,
+			stopCount: 0 };
+		(0, _Util.merge)(_this, initAttr);
+		return _this;
+	}
+
+	_createClass(Enemy, [{
+		key: '_chaseUser',
+		value: function _chaseUser() {
+			/**
+    * when enemies chases users, the A* algorithm will take much time to find the way out,
+    * therefore, we should do the most complicated part only while user moves a step.
+    *
+    * Update: the tanks should not be so talent, they should choose a way and go straight till ending,
+    * but the ending of their travel cannot locate in anywhere except the 'base'
+    *
+    *
+    */
+		}
+	}, {
+		key: 'getAttacked',
+		value: function getAttacked() {
+			_get(Enemy.prototype.__proto__ || Object.getPrototypeOf(Enemy.prototype), 'getAttacked', this).call(this);
+		}
+	}, {
+		key: 'stayInPosition',
+		value: function stayInPosition() {
+			this.stopCount++;
+		}
+	}, {
+		key: 'continueRun',
+		value: function continueRun() {
+			this.stopCount = 0;
+			this.running = true;
+			this.changeDirection();
+		}
+	}, {
+		key: 'releaseRandomFire',
+		value: function releaseRandomFire(controller) {
+			var random = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+			if (!random || _Tank3.default.randomBool === false) controller.addFire(new _EnemyFire2.default(this));
+		}
+	}]);
+
+	return Enemy;
+}(_Tank3.default);
+
+exports.default = Enemy;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -676,7 +791,7 @@ var EnemyBase = function () {
 exports.default = EnemyBase;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -754,7 +869,7 @@ var Tank = function () {
 exports.default = Tank;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -780,7 +895,7 @@ if(false) {
 }
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -843,11 +958,11 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 9;
+webpackContext.id = 10;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -903,7 +1018,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -943,7 +1058,7 @@ var EnemyFire = function (_Fire) {
 exports.default = EnemyFire;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -982,7 +1097,7 @@ var FireManager = function () {
 exports.default = FireManager;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1022,7 +1137,7 @@ var PLayerFire = function (_Fire) {
 exports.default = PLayerFire;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1121,7 +1236,7 @@ var Canvas = function () {
 exports.default = Canvas;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1206,7 +1321,7 @@ var DummyGrid = function (_Grid) {
 exports.default = DummyGrid;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1637,7 +1752,7 @@ var EditorGrid = function (_Grid) {
 exports.default = EditorGrid;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1657,11 +1772,11 @@ var _ImageManager = __webpack_require__(1);
 
 var _ImageManager2 = _interopRequireDefault(_ImageManager);
 
-var _EnemyBase = __webpack_require__(6);
+var _EnemyBase = __webpack_require__(7);
 
 var _EnemyBase2 = _interopRequireDefault(_EnemyBase);
 
-var _Enemy = __webpack_require__(20);
+var _Enemy = __webpack_require__(6);
 
 var _Enemy2 = _interopRequireDefault(_Enemy);
 
@@ -1673,7 +1788,7 @@ var _Map = __webpack_require__(5);
 
 var _Map2 = _interopRequireDefault(_Map);
 
-var _DummyGrid = __webpack_require__(15);
+var _DummyGrid = __webpack_require__(16);
 
 var _DummyGrid2 = _interopRequireDefault(_DummyGrid);
 
@@ -1719,6 +1834,7 @@ var GameGrid = function (_Grid) {
 		key: 'init',
 		value: function init() {
 			_get(GameGrid.prototype.__proto__ || Object.getPrototypeOf(GameGrid.prototype), 'init', this).call(this);
+			this.c.translate(100, 100);
 			this.dummyGrid = new _DummyGrid2.default();
 		}
 	}, {
@@ -1870,7 +1986,6 @@ var GameGrid = function (_Grid) {
 		key: 'updateTank',
 		value: function updateTank(tank) {
 			var run = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-			var fireC = arguments[2];
 
 			//in ideal situation(60Hz), the tank can go $speed*10 pixel one second
 			var posX = tank.posX,
@@ -2032,22 +2147,8 @@ var GameGrid = function (_Grid) {
 
 exports.default = GameGrid;
 
-
-var MAP_TEMPLATE = {
-	size: {
-		width: 36,
-		height: 22
-	},
-	startPosition: [{
-		x: 2,
-		y: 2
-	}],
-	enemies: [{ x: 0, y: 0, type: [3, 4] }, { x: 15, y: 9, type: [0, 1, 2, 3, 4] }, { x: 30, y: 14, type: [0, 1, 2] }],
-	material: [[0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 2, 2, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 3, 3, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 3, 3, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4]]
-};
-
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2197,7 +2298,7 @@ var ProfileGrid = function (_Grid) {
 exports.default = ProfileGrid;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2214,117 +2315,6 @@ var Manager = function Manager() {
 };
 
 exports.default = Manager;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _Tank2 = __webpack_require__(7);
-
-var _Tank3 = _interopRequireDefault(_Tank2);
-
-var _EnemyFire = __webpack_require__(11);
-
-var _EnemyFire2 = _interopRequireDefault(_EnemyFire);
-
-var _Util = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Enemy tank types:
- *     speed | power | health
- *  0.  fast  normal   less
- *  1. normal normal  normal
- *  2. normal higher   more
- *  3. slow  one beat  highest
- *  4. normal normal  normal (always blinking and if destroy it, you can get useful items)
- */
-
-var Enemy = function (_Tank) {
-	_inherits(Enemy, _Tank);
-
-	function Enemy() {
-		var _ref;
-
-		_classCallCheck(this, Enemy);
-
-		for (var _len = arguments.length, props = Array(_len), _key = 0; _key < _len; _key++) {
-			props[_key] = arguments[_key];
-		}
-
-		var _this = _possibleConstructorReturn(this, (_ref = Enemy.__proto__ || Object.getPrototypeOf(Enemy)).call.apply(_ref, [this].concat(props)));
-
-		var initAttr = {
-			type: props[2] || 0, //like this?
-			speed: 5,
-			health: 5,
-			damage: 1,
-			stopCount: 0 };
-		(0, _Util.merge)(_this, initAttr);
-		return _this;
-	}
-
-	_createClass(Enemy, [{
-		key: '_chaseUser',
-		value: function _chaseUser() {
-			/**
-    * when enemies chases users, the A* algorithm will take much time to find the way out,
-    * therefore, we should do the most complicated part only while user moves a step.
-    *
-    * Update: the tanks should not be so talent, they should choose a way and go straight till ending,
-    * but the ending of their travel cannot locate in anywhere except the 'base'
-    *
-    *
-    */
-		}
-	}, {
-		key: 'getAttacked',
-		value: function getAttacked() {
-			_get(Enemy.prototype.__proto__ || Object.getPrototypeOf(Enemy.prototype), 'getAttacked', this).call(this);
-		}
-	}, {
-		key: 'stayInPosition',
-		value: function stayInPosition() {
-			this.stopCount++;
-		}
-	}, {
-		key: 'continueRun',
-		value: function continueRun() {
-			this.stopCount = 0;
-			this.running = true;
-			this.changeDirection();
-		}
-	}, {
-		key: 'releaseRandomFire',
-		value: function releaseRandomFire(controller) {
-			var random = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-			if (!random || _Tank3.default.randomBool === false) controller.addFire(new _EnemyFire2.default(this));
-		}
-	}]);
-
-	return Enemy;
-}(_Tank3.default);
-
-exports.default = Enemy;
 
 /***/ }),
 /* 21 */
@@ -2388,11 +2378,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _Tank2 = __webpack_require__(7);
+var _Tank2 = __webpack_require__(8);
 
 var _Tank3 = _interopRequireDefault(_Tank2);
 
-var _PlayerFire = __webpack_require__(13);
+var _PlayerFire = __webpack_require__(14);
 
 var _PlayerFire2 = _interopRequireDefault(_PlayerFire);
 
@@ -2464,8 +2454,8 @@ var Player = function (_Tank) {
 			listen('keyup', listenKeyUp);
 
 			function listenKeyDown(e) {
+				console.log("quit game");
 				if (e.keyCode === 27) {
-
 					//remove the listeners to make sure that the garbage collection collect it
 					that.game.status = "profile";
 					that.game.animation = false;
@@ -2535,9 +2525,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * this class should store all the status that affect the game,
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _Enemy = __webpack_require__(20);
+var _Enemy = __webpack_require__(6);
 
 var _Enemy2 = _interopRequireDefault(_Enemy);
+
+var _Util = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2585,9 +2577,12 @@ var Judge = function () {
 			    enemyBases = this._enemyBases,
 			    enemyController = this._enemyController;
 
-			if (player.health === 0) {}
-			//TODO:calculate your score and restart the game
-
+			if (player.health === 0) {
+				//TODO:calculate your score and restart the game
+				alert(_Util.MOE_BUNNY);
+				var event = new CustomEvent("keydown", { keyCode: 27 });
+				document.dispatchEvent(event);
+			}
 			/*------------------------player part-------------------------*/
 
 			//enemies are born after a period
@@ -3040,7 +3035,7 @@ exports.default = Judge;
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)();
+exports = module.exports = __webpack_require__(11)();
 // imports
 
 
@@ -3575,7 +3570,7 @@ module.exports = "data:image/gif;base64,R0lGODlhPAA8APcAAAAAAP///7+0uWM1/sS+2UEg
 
 var _mode = __webpack_require__(3);
 
-__webpack_require__(8);
+__webpack_require__(9);
 
 var game = { status: "profile", animation: true };
 setInterval(function () {

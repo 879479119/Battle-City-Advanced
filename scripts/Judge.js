@@ -3,6 +3,7 @@
  */
 
 import Enemy from './ClassTank/Enemy'
+import { MOE_BUNNY } from './ClassUtil/Util'
 
 export default class Judge{
 	constructor(grid, map, player, fireController, enemyBases, enemyController){
@@ -42,6 +43,9 @@ export default class Judge{
 
 		if(player.health === 0){
 			//TODO:calculate your score and restart the game
+			alert(MOE_BUNNY)
+			let event = new CustomEvent("keydown",{keyCode:27})
+			document.dispatchEvent(event)
 		}
 		/*------------------------player part-------------------------*/
 
