@@ -131,9 +131,11 @@ var Grid = function () {
 	}, {
 		key: '_drawBlock',
 		value: function _drawBlock(row, col, type, self) {
+			var offset = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
+
 			if (self === undefined) self = this;
-			var x = col * self.step + this.oX,
-			    y = row * self.step + this.oY,
+			var x = col * self.step + (offset ? this.oX : 0),
+			    y = row * self.step + (offset ? this.oY : 0),
 			    img = _ImageManager2.default.getBitMap(type);
 			if (type === "void") {
 				self.c.fillStyle = "#000";
@@ -152,6 +154,28 @@ var Grid = function () {
 			    y = accuracy ? row : row * self.step,
 			    img = _ImageManager2.default.getBitMap(type);
 			img && self.c.drawImage(img, x, y, self.len, self.len);
+		}
+	}, {
+		key: 'calOffset',
+		value: function calOffset() {
+			var w = this.step * this.map.width + 4,
+			    h = this.step * this.map.height + 4,
+			    x = (this.width - w) / 2 - 2,
+			    y = (this.height - h) / 2 - 2;
+			this.oX = x + 2;
+			this.oY = y + 2;
+		}
+	}, {
+		key: 'drawBorder',
+		value: function drawBorder() {
+			var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+			var oX = offset ? this.oX : 0;
+			var oY = offset ? this.oY : 0;
+			this.c.strokeStyle = "#ccc";
+			this.c.lineWidth = 4;
+			this.c.strokeRect(oX - 2, oY - 2, this.step * this.map.width + 4, this.step * this.map.height + 4);
+			this.partner && this.partner.setOffset(oX, oY);
 		}
 	}, {
 		key: 'clearAll',
@@ -402,7 +426,14 @@ function init(game) {
 		grid.clearAll();
 		frame.go();
 		animation = requestAnimationFrame(keyFrame);
-		if (!game.animation) cancelAnimationFrame(animation);
+		if (!game.animation) {
+			/**
+    * END OF THIS GAME
+    * reset the canvas and remove all the listeners
+    */
+			grid.reset();
+			cancelAnimationFrame(animation);
+		}
 	};
 	var animation = window.requestAnimationFrame(keyFrame);
 }
@@ -414,9 +445,9 @@ function editMap(game, width, height) {
 	var canvas = new _Canvas2.default(grid, map);
 
 	grid.init(map, canvas);
+	grid.calOffset();
 	grid.drawBorder();
 	// grid.drawLine()
-	console.log(213);
 	//create some samples for user to pick
 	grid.drawToolBar();
 }
@@ -1417,20 +1448,6 @@ var EditorGrid = function (_Grid) {
 			this.c.fillRect(x, y, this.len, this.len);
 		}
 	}, {
-		key: 'drawBorder',
-		value: function drawBorder() {
-			var w = this.step * this.map.width + 4,
-			    h = this.step * this.map.height + 4,
-			    x = (this.width - w) / 2 - 2,
-			    y = (this.height - h) / 2 - 2;
-			this.c.strokeStyle = "#ccc";
-			this.c.lineWidth = 4;
-			this.c.strokeRect(x, y, w, h);
-			this.oX = x + 2;
-			this.oY = y + 2;
-			this.partner.setOffset(this.oX, this.oY);
-		}
-	}, {
 		key: 'drawLine',
 		value: function drawLine(self) {
 			/**
@@ -1821,9 +1838,13 @@ var GameGrid = function (_Grid) {
 		_this.alley = [];
 
 		var mapSourceList = _Map2.default.getMapList(),
-		    material = mapSourceList[0].material;
+		    _mapSourceList$ = mapSourceList[0],
+		    material = _mapSourceList$.material,
+		    _mapSourceList$$size = _mapSourceList$.size,
+		    width = _mapSourceList$$size.width,
+		    height = _mapSourceList$$size.height;
 
-		_this.map = mapSourceList[0];
+		_this.map = Object.assign({}, mapSourceList[0], { width: width, height: height });
 		_this.material = material;
 		return _this;
 	}
@@ -1834,8 +1855,14 @@ var GameGrid = function (_Grid) {
 		key: 'init',
 		value: function init() {
 			_get(GameGrid.prototype.__proto__ || Object.getPrototypeOf(GameGrid.prototype), 'init', this).call(this);
-			this.c.translate(100, 100);
+			this.calOffset();
+			this.c.translate(this.oX, this.oY);
 			this.dummyGrid = new _DummyGrid2.default();
+		}
+	}, {
+		key: 'reset',
+		value: function reset() {
+			this.c.translate(-this.oX, -this.oY);
 		}
 	}, {
 		key: '_geneAlley',
@@ -1942,7 +1969,7 @@ var GameGrid = function (_Grid) {
 			// basic blocks
 			for (var row = 0; row < height; row++) {
 				for (var col = 0; col < width; col++) {
-					this._drawBlock(row, col, blocks[row][col]);
+					this._drawBlock(row, col, blocks[row][col], this, false);
 				}
 			}
 			// base and other giant blocks
@@ -2454,7 +2481,6 @@ var Player = function (_Tank) {
 			listen('keyup', listenKeyUp);
 
 			function listenKeyDown(e) {
-				console.log("quit game");
 				if (e.keyCode === 27) {
 					//remove the listeners to make sure that the garbage collection collect it
 					that.game.status = "profile";
@@ -2594,6 +2620,7 @@ var Judge = function () {
 
 			Judge._checkTanks(grid, player, enemyController);
 
+			grid.drawBorder(false);
 			grid.updateTank(player, player.key_down && player.running);
 			player.running = true;
 

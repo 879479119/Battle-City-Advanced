@@ -44,18 +44,6 @@ export default class EditorGrid extends Grid{
 		this.c.fillStyle = "#000"
 		this.c.fillRect(x,y,this.len,this.len)
 	}
-	drawBorder(){
-		let w = this.step * this.map.width + 4,
-			h = this.step * this.map.height + 4,
-			x = (this.width - w) / 2 - 2,
-			y = (this.height - h) / 2 - 2
-		this.c.strokeStyle = "#ccc"
-		this.c.lineWidth = 4
-		this.c.strokeRect(x,y,w,h)
-		this.oX = x + 2
-		this.oY = y + 2
-		this.partner.setOffset(this.oX,this.oY)
-	}
 	drawLine(self){
 		/**
 		 * there are three ways to draw a grid:

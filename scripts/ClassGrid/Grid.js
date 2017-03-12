@@ -35,10 +35,10 @@ export default class Grid{
 		this.c.fillRect(0,0,this.width,this.height)
 	}
 	/*basic methods*/
-	_drawBlock(row, col, type, self){
+	_drawBlock(row, col, type, self, offset= true){
 		if(self === undefined) self = this
-		let x = col * self.step + this.oX,
-			y = row * self.step + this.oY,
+		let x = col * self.step + (offset ? this.oX : 0),
+			y = row * self.step + (offset ? this.oY : 0),
 			img = ImageManager.getBitMap(type)
 		if(type === "void"){
 			self.c.fillStyle = "#000"
@@ -53,6 +53,22 @@ export default class Grid{
 			y = accuracy ? row : row * self.step,
 			img = ImageManager.getBitMap(type)
 		img && self.c.drawImage(img, x, y, self.len, self.len)
+	}
+	calOffset(){
+		let w = this.step * this.map.width + 4,
+			h = this.step * this.map.height + 4,
+			x = (this.width - w) / 2 - 2,
+			y = (this.height - h) / 2 - 2
+		this.oX = x + 2
+		this.oY = y + 2
+	}
+	drawBorder(offset= true){
+		let oX = offset ? this.oX : 0
+		let oY = offset ? this.oY : 0
+		this.c.strokeStyle = "#ccc"
+		this.c.lineWidth = 4
+		this.c.strokeRect(oX - 2, oY - 2,this.step * this.map.width + 4,this.step * this.map.height + 4)
+		this.partner && this.partner.setOffset(oX,oY)
 	}
 	clearAll(){
 		this.c.fillStyle = "#000"

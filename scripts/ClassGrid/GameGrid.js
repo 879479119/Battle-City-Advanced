@@ -15,15 +15,19 @@ export default class GameGrid extends Grid{
 		this.alley = []
 
 		const mapSourceList = Map.getMapList(),
-			{ material } = mapSourceList[0]
-		this.map = mapSourceList[0]
+			{ material, size: {width, height} } = mapSourceList[0]
+		this.map = Object.assign({}, mapSourceList[0], {width,height})
 		this.material = material
 	}
 	/*basic methods*/
 	init(){
 		super.init()
-		this.c.translate(100,100)
+		this.calOffset()
+		this.c.translate(this.oX,this.oY)
 		this.dummyGrid = new DummyGrid()
+	}
+	reset(){
+		this.c.translate(-this.oX,-this.oY)
 	}
 	_geneAlley(){
 		const material = this.material,
@@ -100,7 +104,7 @@ export default class GameGrid extends Grid{
 		// basic blocks
 		for(let row = 0;row < height;row ++){
 			for(let col = 0;col < width;col ++){
-				this._drawBlock(row, col, blocks[row][col])
+				this._drawBlock(row, col, blocks[row][col], this, false)
 			}
 		}
 		// base and other giant blocks

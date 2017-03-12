@@ -58,6 +58,7 @@ export default class Judge{
 
 		Judge._checkTanks(grid, player, enemyController)
 
+		grid.drawBorder(false)
 		grid.updateTank(player, player.key_down && player.running)
 		player.running = true
 
