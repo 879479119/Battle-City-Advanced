@@ -181,7 +181,7 @@ var Grid = function () {
 		key: 'clearAll',
 		value: function clearAll() {
 			this.c.fillStyle = "#000";
-			this.c.fillRect(0, 0, this.width, this.height);
+			this.c.fillRect(-this.oX, -this.oY, this.width, this.height);
 		}
 	}], [{
 		key: '_adaptor',

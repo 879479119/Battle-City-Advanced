@@ -72,7 +72,7 @@ export default class Grid{
 	}
 	clearAll(){
 		this.c.fillStyle = "#000"
-		this.c.fillRect(0,0,this.width,this.height)
+		this.c.fillRect(-this.oX,-this.oY,this.width,this.height)
 	}
 	static _adaptor(material){
 		return material.map(k=>{
