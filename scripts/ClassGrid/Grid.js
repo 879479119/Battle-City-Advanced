@@ -37,8 +37,8 @@ export default class Grid{
 	/*basic methods*/
 	_drawBlock(row, col, type, self, offset= true){
 		if(self === undefined) self = this
-		let x = col * self.step + (offset ? this.oX : 0),
-			y = row * self.step + (offset ? this.oY : 0),
+		let x = col * self.step + (offset ? self.oX : 0),
+			y = row * self.step + (offset ? self.oY : 0),
 			img = ImageManager.getBitMap(type)
 		if(type === "void"){
 			self.c.fillStyle = "#000"

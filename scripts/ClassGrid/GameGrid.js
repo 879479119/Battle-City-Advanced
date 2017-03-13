@@ -2,6 +2,7 @@ import ImageManager from '../ClassManager/ImageManager'
 import EnemyBase from '../ClassTank/EnemyBase'
 import Enemy from '../ClassTank/Enemy'
 import Grid from './Grid'
+import DetailGrid from './DetailGrid'
 import Map from './Map'
 import DummyGrid from './DummyGrid'
 
@@ -25,6 +26,7 @@ export default class GameGrid extends Grid{
 		this.calOffset()
 		this.c.translate(this.oX,this.oY)
 		this.dummyGrid = new DummyGrid()
+		this.detailGrid = new DetailGrid(this, this.map)
 	}
 	reset(){
 		this.c.translate(-this.oX,-this.oY)
@@ -95,7 +97,13 @@ export default class GameGrid extends Grid{
 		else return this.alley
 	}
 	drawConstruction(){
+		/**
+		 * draw construction means that we can draw the blocks only when it varies,
+		 * and it is optimized now
+		 */
+		this.detailGrid._clearAll()
 
+		//traditional way to draw those
 		const { size: { width, height}, base: { x, y } } = this.map,
 			material = this.material
 
@@ -104,12 +112,12 @@ export default class GameGrid extends Grid{
 		// basic blocks
 		for(let row = 0;row < height;row ++){
 			for(let col = 0;col < width;col ++){
-				this._drawBlock(row, col, blocks[row][col], this, false)
+				this._drawBlock(row, col, blocks[row][col], this.detailGrid, true)
 			}
 		}
 		// base and other giant blocks
+		// this._drawGiantBlock(x*this.step+this.detailGrid.oX, y*this.step+this.detailGrid.oY, 'base', this.detailGrid, true)
 		this._drawGiantBlock(x, y, 'base')
-
 	}
 	updateEnemy(enemy){
 		this.updateTank(enemy)

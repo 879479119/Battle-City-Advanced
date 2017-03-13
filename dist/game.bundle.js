@@ -134,8 +134,8 @@ var Grid = function () {
 			var offset = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
 
 			if (self === undefined) self = this;
-			var x = col * self.step + (offset ? this.oX : 0),
-			    y = row * self.step + (offset ? this.oY : 0),
+			var x = col * self.step + (offset ? self.oX : 0),
+			    y = row * self.step + (offset ? self.oY : 0),
 			    img = _ImageManager2.default.getBitMap(type);
 			if (type === "void") {
 				self.c.fillStyle = "#000";
@@ -431,6 +431,7 @@ function init(game) {
     * END OF THIS GAME
     * reset the canvas and remove all the listeners
     */
+			grid.detailGrid.removeElement();
 			grid.reset();
 			cancelAnimationFrame(animation);
 		}
@@ -1218,6 +1219,11 @@ var Canvas = function () {
 	}
 
 	_createClass(Canvas, [{
+		key: "_clearAll",
+		value: function _clearAll() {
+			this.c.clearRect(0, 0, this.ele.width, this.ele.height);
+		}
+	}, {
 		key: "setOffset",
 		value: function setOffset(oX, oY) {
 			this.oX = oX;
@@ -1256,7 +1262,7 @@ var Canvas = function () {
 	}, {
 		key: "clearSelection",
 		value: function clearSelection() {
-			this.c.clearRect(0, 0, this.ele.width, this.ele.height);
+			this._clearAll();
 			// this.grid.drawLine(this)
 		}
 	}]);
@@ -1801,6 +1807,10 @@ var _Grid2 = __webpack_require__(0);
 
 var _Grid3 = _interopRequireDefault(_Grid2);
 
+var _DetailGrid = __webpack_require__(71);
+
+var _DetailGrid2 = _interopRequireDefault(_DetailGrid);
+
 var _Map = __webpack_require__(5);
 
 var _Map2 = _interopRequireDefault(_Map);
@@ -1858,6 +1868,7 @@ var GameGrid = function (_Grid) {
 			this.calOffset();
 			this.c.translate(this.oX, this.oY);
 			this.dummyGrid = new _DummyGrid2.default();
+			this.detailGrid = new _DetailGrid2.default(this, this.map);
 		}
 	}, {
 		key: 'reset',
@@ -1954,6 +1965,13 @@ var GameGrid = function (_Grid) {
 	}, {
 		key: 'drawConstruction',
 		value: function drawConstruction() {
+			/**
+    * draw construction means that we can draw the blocks only when it varies,
+    * and it is optimized now
+    */
+			this.detailGrid._clearAll();
+
+			//traditional way to draw those
 			var _map = this.map,
 			    _map$size = _map.size,
 			    width = _map$size.width,
@@ -1969,10 +1987,11 @@ var GameGrid = function (_Grid) {
 			// basic blocks
 			for (var row = 0; row < height; row++) {
 				for (var col = 0; col < width; col++) {
-					this._drawBlock(row, col, blocks[row][col], this, false);
+					this._drawBlock(row, col, blocks[row][col], this.detailGrid, true);
 				}
 			}
 			// base and other giant blocks
+			// this._drawGiantBlock(x*this.step+this.detailGrid.oX, y*this.step+this.detailGrid.oY, 'base', this.detailGrid, true)
 			this._drawGiantBlock(x, y, 'base');
 		}
 	}, {
@@ -2616,7 +2635,7 @@ var Judge = function () {
 			//check tanks and construction
 			Judge._checkImpact(grid, player);
 			//check fire & construction & tanks
-			Judge._checkCannon(grid, player, enemyController, fireController);
+			var shouldRefresh = Judge._checkCannon(grid, player, enemyController, fireController);
 
 			Judge._checkTanks(grid, player, enemyController);
 
@@ -2644,7 +2663,7 @@ var Judge = function () {
 
 			/*------------------------either  part-------------------------*/
 			grid.updateFire(fireController);
-			grid.drawConstruction();
+			shouldRefresh || grid.drawConstruction();
 		}
 	}], [{
 		key: '_checkImpact',
@@ -2840,6 +2859,7 @@ var Judge = function () {
     */
 			if (fireC.fireArr.length === 0) return;
 			var alley = grid.material;
+			var shouldRefresh = void 0;
 
 			var _loop = function _loop(index) {
 				var _fireC$fireArr$index = fireC.fireArr[index],
@@ -2952,7 +2972,10 @@ var Judge = function () {
 							throw Error("WRONG DIRECTION");
 					}
 
-					if (over === true) fireC.fireGone(index);
+					if (over === true) {
+						fireC.fireGone(index);
+						return true;
+					} else return false;
 
 					/**
       * if user pass 'col',the block will be destroyed!
@@ -3035,7 +3058,7 @@ var Judge = function () {
 					fireC.fireGone(index);
 				}
 				//check Construction first
-				checkConstruction();
+				shouldRefresh = checkConstruction();
 				//then the player
 				checkPlayer();
 				//and enemies
@@ -3045,6 +3068,9 @@ var Judge = function () {
 			for (var index in fireC.fireArr) {
 				_loop(index);
 			}
+
+			//this Bool value tells if we draw a new map
+			return shouldRefresh;
 		}
 	}, {
 		key: 'randomBool',
@@ -3613,6 +3639,62 @@ setInterval(function () {
         game.status = "";
     }
 }, 200);
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Canvas2 = __webpack_require__(15);
+
+var _Canvas3 = _interopRequireDefault(_Canvas2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DetailGrid = function (_Canvas) {
+	_inherits(DetailGrid, _Canvas);
+
+	function DetailGrid() {
+		var _ref;
+
+		_classCallCheck(this, DetailGrid);
+
+		for (var _len = arguments.length, props = Array(_len), _key = 0; _key < _len; _key++) {
+			props[_key] = arguments[_key];
+		}
+
+		var _this = _possibleConstructorReturn(this, (_ref = DetailGrid.__proto__ || Object.getPrototypeOf(DetailGrid)).call.apply(_ref, [this].concat(props)));
+
+		_this.oX = props[0].oX;
+		_this.oY = props[0].oY;
+		return _this;
+	}
+
+	_createClass(DetailGrid, [{
+		key: 'removeElement',
+		value: function removeElement() {
+			this.ele.remove();
+		}
+	}]);
+
+	return DetailGrid;
+}(_Canvas3.default);
+
+exports.default = DetailGrid;
 
 /***/ })
 /******/ ]);
