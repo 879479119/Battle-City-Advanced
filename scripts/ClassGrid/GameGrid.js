@@ -30,6 +30,7 @@ export default class GameGrid extends Grid{
 	}
 	reset(){
 		this.c.translate(-this.oX,-this.oY)
+		this.detailGrid.removeElement()
 	}
 	_geneAlley(){
 		const material = this.material,

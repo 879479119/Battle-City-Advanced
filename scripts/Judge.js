@@ -82,7 +82,7 @@ export default class Judge{
 
 		/*------------------------either  part-------------------------*/
 		grid.updateFire(fireController)
-		shouldRefresh || grid.drawConstruction()
+		shouldRefresh && grid.drawConstruction()
 	}
 	static _checkImpact(grid, tank){
 

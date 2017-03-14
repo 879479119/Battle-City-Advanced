@@ -61,7 +61,6 @@ export function init(game) {
 			 * END OF THIS GAME
 			 * reset the canvas and remove all the listeners
 			 */
-			grid.detailGrid.removeElement()
 			grid.reset()
 			cancelAnimationFrame(animation)
 		}

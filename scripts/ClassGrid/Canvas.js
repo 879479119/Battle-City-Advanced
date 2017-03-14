@@ -34,6 +34,9 @@ export default class Canvas{
 	_clearAll(){
 		this.c.clearRect(0,0,this.ele.width,this.ele.height)
 	}
+	removeElement(){
+		this.ele.remove()
+	}
 	setOffset(oX,oY){
 		this.oX = oX
 		this.oY = oY

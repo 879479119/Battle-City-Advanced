@@ -6,7 +6,4 @@ export default class DetailGrid extends Canvas{
 		this.oX = props[0].oX
 		this.oY = props[0].oY
 	}
-	removeElement(){
-		this.ele.remove()
-	}
 }

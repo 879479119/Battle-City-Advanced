@@ -266,7 +266,7 @@ export default class EditorGrid extends Grid{
 				let remove = this.partner.ele.removeEventListener
 				this.game.status = "profile"
 
-				this.partner.ele.remove()
+				this.partner.removeElement()
 				remove("mousemove", fnMouseMove)
 				remove("mouseup", fnMouseUp)
 				remove("click", fnClick)
