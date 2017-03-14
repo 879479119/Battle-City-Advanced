@@ -1464,12 +1464,12 @@ var EditorGrid = function (_Grid) {
 
 		var _this = _possibleConstructorReturn(this, (_ref = EditorGrid.__proto__ || Object.getPrototypeOf(EditorGrid)).call.apply(_ref, [this].concat(props)));
 
-		_this.activePicker = "walls";
+		_this.activePicker = [94, 40, "walls", 1];
 		_this.key_down = false;
 		_this.giantBlock = false;
 		//noinspection JSUnresolvedVariable
 		_this.game = props[2];
-		_this.mode = "select"; //select rect area or pencil
+		_this.mode = [52, 47, "select", 3]; //select rect area or pencil
 
 		//init the toolBar picker
 		return _this;
@@ -1487,6 +1487,8 @@ var EditorGrid = function (_Grid) {
 			this.map = map;
 			this.partner = canvas;
 			this.startPicker();
+			this.drawToolBorder.apply(this, _toConsumableArray(this.activePicker).concat([true]));
+			this.drawToolBorder.apply(this, _toConsumableArray(this.mode).concat([true]));
 		}
 	}, {
 		key: 'drawInnerGiantBlock',
@@ -1548,14 +1550,14 @@ var EditorGrid = function (_Grid) {
 			    map = this.map;
 			//this method returns the old position
 
-			var _map$changeItem = map.changeItem(sX, sY, this.activePicker),
+			var _map$changeItem = map.changeItem(sX, sY, this.activePicker[2]),
 			    x = _map$changeItem.x,
 			    y = _map$changeItem.y;
 
 			if (x != undefined) this.clearInnerGiant(x, y);
 			this.clearInnerGiant(sX, sY);
 			//draw a new item
-			this.drawInnerGiantBlock(sX, sY, this.activePicker);
+			this.drawInnerGiantBlock(sX, sY, this.activePicker[2]);
 		}
 	}, {
 		key: 'drawArea',
@@ -1568,8 +1570,8 @@ var EditorGrid = function (_Grid) {
 			    map = this.map;
 
 			if (sX === endCol && sY === endRow) {
-				map.changeBlock(endCol, endRow, EditorGrid.MAPPER[this.activePicker][1]);
-				this._drawBlock(endRow, endCol, EditorGrid.MAPPER[this.activePicker][0]);
+				map.changeBlock(endCol, endRow, EditorGrid.MAPPER[this.activePicker[2]][1]);
+				this._drawBlock(endRow, endCol, EditorGrid.MAPPER[this.activePicker[2]][0]);
 				return;
 			}
 
@@ -1586,8 +1588,8 @@ var EditorGrid = function (_Grid) {
 
 			for (var i = xA[0]; i < xA[1]; i++) {
 				for (var j = yA[0]; j < yA[1]; j++) {
-					map.changeBlock(i, j, EditorGrid.MAPPER[this.activePicker][1]);
-					this._drawBlock(j, i, EditorGrid.MAPPER[this.activePicker][0]);
+					map.changeBlock(i, j, EditorGrid.MAPPER[this.activePicker[2]][1]);
+					this._drawBlock(j, i, EditorGrid.MAPPER[this.activePicker[2]][0]);
 				}
 			}
 
@@ -1601,6 +1603,31 @@ var EditorGrid = function (_Grid) {
 			EditorGrid.PICKER.map(function (item) {
 				_this3._drawGiantBlock(item[0], item[1], item[2]);
 			});
+		}
+	}, {
+		key: 'drawToolBorder',
+		value: function drawToolBorder(col, row, name, type) {
+			var init = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
+			if (type === 2 || type === 1) {
+				if (this.activePicker[2] != name || init) {
+					this.rectStroke("#000", 3, this.activePicker[0], this.activePicker[1]);
+					this.rectStroke("#333", 2, col, row);
+				}
+			} else {
+				if (this.mode != name || init) {
+					this.rectStroke("#000", 3, this.mode[0], this.mode[1]);
+					this.rectStroke("#333", 2, col, row);
+				}
+			}
+		}
+	}, {
+		key: 'rectStroke',
+		value: function rectStroke(color, width, col, row) {
+			this.c.strokeStyle = color || "#333";
+			this.c.lineWidth = width || 2;
+			var step = 8;
+			this.c.strokeRect(col * step - 6, row * step - 6, 2 * step + 12, 2 * step + 12);
 		}
 	}, {
 		key: 'startPicker',
@@ -1631,12 +1658,12 @@ var EditorGrid = function (_Grid) {
 					//press down a key
 					if (_this4.key_down === true && _this4.giantBlock === false) {
 
-						if (_this4.mode === "select") {
+						if (_this4.mode[2] === "select") {
 							_this4.partner.drawSelection(col, row);
 						} else {
 							//TODO
-							_this4._drawBlock(row, col, EditorGrid.MAPPER[_this4.activePicker][0]);
-							_this4.map.changeBlock(col, row, EditorGrid.MAPPER[_this4.activePicker][1]);
+							_this4._drawBlock(row, col, EditorGrid.MAPPER[_this4.activePicker[2]][0]);
+							_this4.map.changeBlock(col, row, EditorGrid.MAPPER[_this4.activePicker[2]][1]);
 						}
 					} else {
 						// point out where the cursor is,
@@ -1697,7 +1724,7 @@ var EditorGrid = function (_Grid) {
 				if (_this4.giantBlock === true) {
 					_this4.drawItem();
 				} else {
-					if (_this4.mode === "select") {
+					if (_this4.mode[2] === "select") {
 						_this4.drawArea();
 					} else {
 						//TODO
@@ -1714,13 +1741,15 @@ var EditorGrid = function (_Grid) {
 				EditorGrid.PICKER.map(function (item) {
 					if ((item[0] - 1) * step < x && (item[0] + 3) * step > x && (item[1] - 1) * step < y && (item[1] + 3) * step > y) {
 
+						_this4.drawToolBorder.apply(_this4, _toConsumableArray(item));
+
 						switch (item[3]) {
 							case 1:
-								_this4.activePicker = item[2];
+								_this4.activePicker = item;
 								_this4.giantBlock = false;
 								break;
 							case 2:
-								_this4.activePicker = item[2];
+								_this4.activePicker = item;
 								_this4.giantBlock = true;
 								break;
 							case 3:
@@ -1729,9 +1758,9 @@ var EditorGrid = function (_Grid) {
 								} else if (item[2] === "save") {
 									_this4.map.insertMap();
 								} else if (item[2] === "pencil") {
-									_this4.mode = "pencil";
+									_this4.mode = item;
 								} else if (item[2] === "select") {
-									_this4.mode = "select";
+									_this4.mode = item;
 								} else if (item[2] === "revoke") {
 									_this4.revoke();
 								}
@@ -1757,13 +1786,13 @@ var EditorGrid = function (_Grid) {
 				} else {
 					_this4.outterClick = false;
 					if (_this4.giantBlock === false) {
-						if (_this4.mode === "select") {
+						if (_this4.mode[2] === "select") {
 							_this4.partner.startSelection(col, row);
 							_this4.partner.drawSelection(col, row);
 						} else {
 							//TODO
-							_this4._drawBlock(row, col, EditorGrid.MAPPER[_this4.activePicker][0]);
-							_this4.map.changeBlock(col, row, EditorGrid.MAPPER[_this4.activePicker][1]);
+							_this4._drawBlock(row, col, EditorGrid.MAPPER[_this4.activePicker[2]][0]);
+							_this4.map.changeBlock(col, row, EditorGrid.MAPPER[_this4.activePicker[2]][1]);
 						}
 					} else {
 						_this4.partner.startSelection(col, row);
@@ -1805,7 +1834,7 @@ var EditorGrid = function (_Grid) {
 	}], [{
 		key: 'PICKER',
 		get: function get() {
-			return [[72, 47, "bin", 1], [22, 47, "save", 3], [32, 47, "quit", 3], [42, 47, "pencil", 3], [52, 47, "revoke", 3], [62, 47, "select", 3], [4, 10, "base", 2], [4, 20, "p1tankU", 2], [4, 30, "p2tankF", 2], [4, 40, "enemy1", 2], [94, 10, "steels", 1], [94, 20, "grass", 1], [94, 30, "water", 1], [94, 40, "walls", 1]];
+			return [[72, 47, "bin", 1], [22, 47, "save", 3], [32, 47, "quit", 3], [42, 47, "pencil", 3], [52, 47, "select", 3], [62, 47, "revoke", 3], [4, 10, "base", 2], [4, 20, "p1tankU", 2], [4, 30, "p2tankF", 2], [4, 40, "enemy1", 2], [94, 10, "steels", 1], [94, 20, "grass", 1], [94, 30, "water", 1], [94, 40, "walls", 1]];
 		}
 	}, {
 		key: 'MAPPER',

@@ -17,7 +17,7 @@
     + user cannot fire while running now
     + :white_check_mark: enemies may stop to fire for a period when meet block
 + **Editor Mode**:
-    + tool selected animation
+    + :white_check_mark: tool selected animation
     + let user modify the size of map
     + enemy base individuation providing count and type
 + **Profile Mode**:

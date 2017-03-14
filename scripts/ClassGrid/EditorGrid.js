@@ -14,12 +14,12 @@ export default class EditorGrid extends Grid{
 	constructor(...props){
 		super(...props)
 
-		this.activePicker = "walls"
+		this.activePicker = [94,40,"walls",1]
 		this.key_down = false
 		this.giantBlock = false
 		//noinspection JSUnresolvedVariable
 		this.game = props[2]
-		this.mode = "select"        //select rect area or pencil
+		this.mode = [52,47,"select",3]        //select rect area or pencil
 
 		//init the toolBar picker
 	}
@@ -31,6 +31,8 @@ export default class EditorGrid extends Grid{
 		this.map = map
 		this.partner = canvas
 		this.startPicker()
+		this.drawToolBorder(...this.activePicker, true)
+		this.drawToolBorder(...this.mode, true)
 	}
 	drawInnerGiantBlock(col, row, type){
 		let x = col * this.step + this.oX,
@@ -80,17 +82,17 @@ export default class EditorGrid extends Grid{
 	drawItem(){
 		let { partner: {sX, sY}, map} = this
 		//this method returns the old position
-		let { x, y } = map.changeItem(sX,sY,this.activePicker)
+		let { x, y } = map.changeItem(sX,sY,this.activePicker[2])
 		if(x != undefined) this.clearInnerGiant(x,y)
 		this.clearInnerGiant(sX,sY)
 		//draw a new item
-		this.drawInnerGiantBlock(sX,sY,this.activePicker)
+		this.drawInnerGiantBlock(sX,sY,this.activePicker[2])
 	}
 	drawArea(){
 		const { partner: {endCol, endRow, sX, sY}, map} = this
 		if(sX === endCol && sY === endRow){
-			map.changeBlock(endCol,endRow,EditorGrid.MAPPER[this.activePicker][1])
-			this._drawBlock(endRow,endCol,EditorGrid.MAPPER[this.activePicker][0])
+			map.changeBlock(endCol,endRow,EditorGrid.MAPPER[this.activePicker[2]][1])
+			this._drawBlock(endRow,endCol,EditorGrid.MAPPER[this.activePicker[2]][0])
 			return
 		}
 
@@ -102,8 +104,8 @@ export default class EditorGrid extends Grid{
 
 		for(let i = xA[0];i < xA[1];i ++){
 			for(let j = yA[0];j < yA[1];j ++){
-				map.changeBlock(i,j,EditorGrid.MAPPER[this.activePicker][1])
-				this._drawBlock(j,i,EditorGrid.MAPPER[this.activePicker][0])
+				map.changeBlock(i,j,EditorGrid.MAPPER[this.activePicker[2]][1])
+				this._drawBlock(j,i,EditorGrid.MAPPER[this.activePicker[2]][0])
 			}
 		}
 
@@ -113,6 +115,25 @@ export default class EditorGrid extends Grid{
 		EditorGrid.PICKER.map(item=>{
 			this._drawGiantBlock(item[0],item[1],item[2])
 		})
+	}
+	drawToolBorder(col ,row, name, type, init= false){
+		if(type === 2 || type === 1){
+			if(this.activePicker[2] != name || init){
+				this.rectStroke("#000",3,this.activePicker[0],this.activePicker[1])
+				this.rectStroke("#333",2,col,row)
+			}
+		}else{
+			if(this.mode != name || init){
+				this.rectStroke("#000",3,this.mode[0],this.mode[1])
+				this.rectStroke("#333",2,col,row)
+			}
+		}
+	}
+	rectStroke(color, width, col, row){
+		this.c.strokeStyle = color || "#333"
+		this.c.lineWidth = width || 2
+		let step = 8
+		this.c.strokeRect(col*step-6,row*step-6,2*step+12,2*step+12)
 	}
 	startPicker(){
 		let { map, width, height, step, ele: { offsetLeft, offsetTop } } = this
@@ -131,12 +152,12 @@ export default class EditorGrid extends Grid{
 				//press down a key
 				if(this.key_down === true && this.giantBlock === false) {
 
-					if (this.mode === "select") {
+					if (this.mode[2] === "select") {
 						this.partner.drawSelection(col, row)
 					} else {
 						//TODO
-						this._drawBlock(row, col, EditorGrid.MAPPER[this.activePicker][0])
-						this.map.changeBlock(col, row, EditorGrid.MAPPER[this.activePicker][1])
+						this._drawBlock(row, col, EditorGrid.MAPPER[this.activePicker[2]][0])
+						this.map.changeBlock(col, row, EditorGrid.MAPPER[this.activePicker[2]][1])
 					}
 				}else{
 					// point out where the cursor is,
@@ -183,7 +204,7 @@ export default class EditorGrid extends Grid{
 			if(this.giantBlock === true){
 				this.drawItem()
 			}else{
-				if(this.mode === "select"){
+				if(this.mode[2] === "select"){
 					this.drawArea()
 				}else{
 					//TODO
@@ -201,13 +222,15 @@ export default class EditorGrid extends Grid{
 				if((item[0] - 1) * step < x && (item[0] + 3) * step > x
 					&& (item[1] - 1) * step < y && (item[1] + 3) * step > y) {
 
+					this.drawToolBorder(...item)
+
 					switch(item[3]){
 						case 1:
-							this.activePicker = item[2]
+							this.activePicker = item
 							this.giantBlock = false
 							break
 						case 2:
-							this.activePicker = item[2]
+							this.activePicker = item
 							this.giantBlock = true
 							break
 						case 3:
@@ -216,9 +239,9 @@ export default class EditorGrid extends Grid{
 							}else if(item[2] === "save"){
 								this.map.insertMap()
 							}else if(item[2] === "pencil"){
-								this.mode = "pencil"
+								this.mode = item
 							}else if(item[2] === "select"){
-								this.mode = "select"
+								this.mode = item
 							}else if(item[2] === "revoke"){
 								this.revoke()
 							}
@@ -244,13 +267,13 @@ export default class EditorGrid extends Grid{
 			}else {
 				this.outterClick = false
 				if(this.giantBlock === false){
-					if(this.mode === "select"){
+					if(this.mode[2] === "select"){
 						this.partner.startSelection(col,row)
 						this.partner.drawSelection(col,row)
 					}else{
 						//TODO
-						this._drawBlock(row,col,EditorGrid.MAPPER[this.activePicker][0])
-						this.map.changeBlock(col,row,EditorGrid.MAPPER[this.activePicker][1])
+						this._drawBlock(row,col,EditorGrid.MAPPER[this.activePicker[2]][0])
+						this.map.changeBlock(col,row,EditorGrid.MAPPER[this.activePicker[2]][1])
 					}
 				}else{
 					this.partner.startSelection(col,row)
@@ -293,8 +316,8 @@ export default class EditorGrid extends Grid{
 			[22,47,"save",3],
 			[32,47,"quit",3],
 			[42,47,"pencil",3],
-			[52,47,"revoke",3],
-			[62,47,"select",3],
+			[52,47,"select",3],
+			[62,47,"revoke",3],
 			[4,10,"base",2],
 			[4,20,"p1tankU",2],
 			[4,30,"p2tankF",2],
