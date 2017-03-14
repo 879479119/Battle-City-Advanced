@@ -31,6 +31,12 @@ export default class Canvas{
 
 		this.c = this.ele.getContext('2d')
 	}
+	_clearAll(){
+		this.c.clearRect(0,0,this.ele.width,this.ele.height)
+	}
+	removeElement(){
+		this.ele.remove()
+	}
 	setOffset(oX,oY){
 		this.oX = oX
 		this.oY = oY
@@ -56,7 +62,7 @@ export default class Canvas{
 		this.endRow = row
 	}
 	clearSelection(){
-		this.c.clearRect(0,0,this.ele.width,this.ele.height)
+		this._clearAll()
 		// this.grid.drawLine(this)
 	}
 }

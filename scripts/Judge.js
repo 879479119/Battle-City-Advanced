@@ -54,7 +54,7 @@ export default class Judge{
 		//check tanks and construction
 		Judge._checkImpact(grid, player)
 		//check fire & construction & tanks
-		Judge._checkCannon(grid, player, enemyController, fireController)
+		let shouldRefresh = Judge._checkCannon(grid, player, enemyController, fireController)
 
 		Judge._checkTanks(grid, player, enemyController)
 
@@ -82,7 +82,7 @@ export default class Judge{
 
 		/*------------------------either  part-------------------------*/
 		grid.updateFire(fireController)
-		grid.drawConstruction()
+		shouldRefresh && grid.drawConstruction()
 	}
 	static _checkImpact(grid, tank){
 
@@ -253,6 +253,7 @@ export default class Judge{
 		 */
 		if (fireC.fireArr.length === 0) return
 		const alley = grid.material
+		let shouldRefresh
 
 		for(let index in fireC.fireArr){
 			const { accuracyX = 0, accuracyY = 0, direction, size, from_ally } = fireC.fireArr[index]
@@ -321,7 +322,10 @@ export default class Judge{
 						throw Error("WRONG DIRECTION")
 				}
 
-				if(over === true) fireC.fireGone(index)
+				if(over === true) {
+					fireC.fireGone(index)
+					return true
+				}else return false
 
 				/**
 				 * if user pass 'col',the block will be destroyed!
@@ -409,12 +413,15 @@ export default class Judge{
 				fireC.fireGone(index)
 			}
 			//check Construction first
-			checkConstruction()
+			shouldRefresh = checkConstruction()
 			//then the player
 			checkPlayer()
 			//and enemies
 			checkEnemies()
 		}
+
+		//this Bool value tells if we draw a new map
+		return shouldRefresh
 	}
 	static get randomBool(){
 		return !!(Math.random() * 600 >>> 0)

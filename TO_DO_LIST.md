@@ -8,16 +8,16 @@
 + :white_check_mark: cannon lies in a layer above grass, ani't matching the old version
 + complete the rules of game, ensure it runs same as the old one
 + our tank lose control when press several keys same time
-+ game mode canvas lies out of the center of grid
++ :white_check_mark: game mode canvas lies out of the center of grid
 
 ### UPDATE
 
 + **Game Mode**:
-    + draw construction in a single canvas, or it takes much time to update it every frame
+    + :white_check_mark: draw construction in a single canvas, or it takes much time to update it every frame
     + user cannot fire while running now
-    + enemies may stop to fire for a period when meet block
+    + :white_check_mark: enemies may stop to fire for a period when meet block
 + **Editor Mode**:
-    + tool selected animation
+    + :white_check_mark: tool selected animation
     + let user modify the size of map
     + enemy base individuation providing count and type
 + **Profile Mode**:
